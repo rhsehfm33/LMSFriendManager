@@ -3,9 +3,7 @@ package com.fastcampus.javaallinone.project3.mycontact.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -38,5 +36,9 @@ public class Person {
 
     @ToString.Exclude
     private String phoneNumber;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Block block;
 
 }
