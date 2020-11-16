@@ -83,5 +83,9 @@ public class Person {
         if (!StringUtils.isEmpty(personDto.getPhoneNumber())) {
             this.setPhoneNumber(personDto.getPhoneNumber());
         }
+
+        if (personDto.getBirthday() != null) {
+            this.setBirthDay(Birthday.of(personDto.getBirthday()));
+        }
     }
 }
