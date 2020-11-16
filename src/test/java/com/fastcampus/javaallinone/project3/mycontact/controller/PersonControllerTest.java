@@ -1,5 +1,6 @@
 package com.fastcampus.javaallinone.project3.mycontact.controller;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +19,13 @@ class PersonControllerTest {
 
     private MockMvc mockMvc;
 
+    @BeforeEach
+    void beforeEach() {
+        mockMvc = MockMvcBuilders.standaloneSetup(personController).build();
+    }
+
     @Test
     void getPerson() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(personController).build();
-
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/person/1"))
                 .andDo(print())
@@ -30,8 +34,6 @@ class PersonControllerTest {
 
     @Test
     void postPerson() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(personController).build();
-
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/person")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -46,8 +48,6 @@ class PersonControllerTest {
 
     @Test
     void modifyPerson() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(personController).build();
-
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/person/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -62,8 +62,6 @@ class PersonControllerTest {
 
     @Test
     void modifyName() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(personController).build();
-
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/api/person/1")
                 .param("name", "martin2"))
