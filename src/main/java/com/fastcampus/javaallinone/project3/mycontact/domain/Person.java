@@ -10,8 +10,8 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -29,10 +29,6 @@ public class Person {
     @NotEmpty
     @Column(nullable = false)
     private String name;
-
-    @NonNull
-    @Min(1)
-    private int age;
 
     private String hobby;
 
@@ -59,11 +55,29 @@ public class Person {
     @ToString.Exclude
     private Block block;
 
-    public void set(PersonDto personDto) {
-        if (personDto.getAge() != 0) {
-            this.setAge(personDto.getAge());
+    public Integer getAge() {
+        if (this.birthDay != null) {
+            return LocalDate.now().getYear() - this.birthDay.getYearOfBirthday() + 1;
         }
+        else {
+            return null;
+        }
+    }
 
+    public Boolean isBirthdayToday() {
+        if (this.birthDay != null) {
+            return LocalDate.now().equals(
+                    LocalDate.of(this.birthDay.getYearOfBirthday(),
+                            this.birthDay.getMonthOfBirthday(),
+                            this.birthDay.getDayOfBirthday())
+            );
+        }
+        else {
+            return null;
+        }
+    }
+
+    public void set(PersonDto personDto) {
         if (!StringUtils.isEmpty(personDto.getHobby())) {
             this.setHobby(personDto.getHobby());
         }
