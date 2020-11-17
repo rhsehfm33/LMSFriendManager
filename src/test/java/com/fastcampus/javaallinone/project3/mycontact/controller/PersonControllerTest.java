@@ -3,7 +3,6 @@ package com.fastcampus.javaallinone.project3.mycontact.controller;
 import com.fastcampus.javaallinone.project3.mycontact.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +12,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,9 +74,11 @@ class PersonControllerTest {
     void modifyName() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/api/person/1")
-                .param("name", "martin2"))
+                .param("name", "martinModified"))
                 .andDo(print())
                 .andExpect(status().isOk());
+
+        assertThat(personRepository.findById(1L).get().getName()).isEqualTo("martinModified");
     }
 
     @Test
@@ -85,6 +88,6 @@ class PersonControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        log.info("people deleted : {}", personRepository.findPeopleDeleted());
+        assertTrue(personRepository.findPeopleDeleted().stream().anyMatch(person -> person.getId().equals(1L)));
     }
 }
