@@ -1,6 +1,9 @@
 package com.fastcampus.javaallinone.project3.mycontact.controller;
 
+import com.fastcampus.javaallinone.project3.mycontact.controller.dto.PersonDto;
 import com.fastcampus.javaallinone.project3.mycontact.repository.PersonRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,6 +31,9 @@ class PersonControllerTest {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
 
@@ -48,9 +56,7 @@ class PersonControllerTest {
                 MockMvcRequestBuilders.post("/api/person")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content("{\n" +
-                            "    \"name\" : \"martin2\",\n" +
-                            "    \"age\" : 20,\n" +
-                            "    \"bloodType\" : \"A\"\n" +
+                            "    \"name\" : \"martin2\"\n" +
                             "}"))
                 .andDo(print())
                 .andExpect(status().isCreated());
@@ -58,14 +64,12 @@ class PersonControllerTest {
 
     @Test
     void modifyPerson() throws Exception {
+        PersonDto dto = PersonDto.of("james", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
+
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/person/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content("{\n" +
-                        "    \"name\" : \"martin\",\n" +
-                        "    \"age\" : 20,\n" +
-                        "    \"bloodType\" : \"A\"\n" +
-                        "}"))
+                .content(toJsonString(dto)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -89,5 +93,9 @@ class PersonControllerTest {
                 .andExpect(status().isOk());
 
         assertTrue(personRepository.findPeopleDeleted().stream().anyMatch(person -> person.getId().equals(1L)));
+    }
+
+    private String toJsonString(PersonDto personDto) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(personDto);
     }
 }
