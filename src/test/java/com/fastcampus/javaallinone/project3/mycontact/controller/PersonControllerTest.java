@@ -82,7 +82,7 @@ class PersonControllerTest {
                 () -> assertThat(result.getName()).isEqualTo("martin"),
                 () -> assertThat(result.getHobby()).isEqualTo("programming"),
                 () -> assertThat(result.getAddress()).isEqualTo("판교"),
-                () -> assertThat(result.getBirthDay()).isEqualTo(Birthday.of(LocalDate.now())),
+                () -> assertThat(result.getBirthday()).isEqualTo(Birthday.of(LocalDate.now())),
                 () -> assertThat(result.getJob()).isEqualTo("programmer"),
                 () -> assertThat(result.getPhoneNumber()).isEqualTo("010-1111-2222")
         );
