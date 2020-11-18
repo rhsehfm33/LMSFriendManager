@@ -3,6 +3,8 @@ package com.fastcampus.javaallinone.project3.mycontact.service;
 import com.fastcampus.javaallinone.project3.mycontact.controller.dto.PersonDto;
 import com.fastcampus.javaallinone.project3.mycontact.domain.Person;
 import com.fastcampus.javaallinone.project3.mycontact.domain.dto.Birthday;
+import com.fastcampus.javaallinone.project3.mycontact.exception.PersonNotFoundException;
+import com.fastcampus.javaallinone.project3.mycontact.exception.RenameNotPermittedException;
 import com.fastcampus.javaallinone.project3.mycontact.repository.PersonRepository;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -68,11 +70,11 @@ class PersonServiceTest {
     }
 
     @Test
-    void modifyInfPersonNotFound() {
+    void modifyIfPersonNotFound() {
         when(personRepository.findById(1L))
                 .thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> personService.modify(1L, mockPersonDto()));
+        assertThrows(PersonNotFoundException.class, () -> personService.modify(1L, mockPersonDto()));
     }
 
     @Test
@@ -80,7 +82,7 @@ class PersonServiceTest {
         when(personRepository.findById(1L))
                 .thenReturn(Optional.of(new Person("tony")));
 
-        assertThrows(RuntimeException.class, () -> personService.modify(1L, mockPersonDto()));
+        assertThrows(RenameNotPermittedException.class, () -> personService.modify(1L, mockPersonDto()));
     }
 
     @Test
@@ -98,7 +100,7 @@ class PersonServiceTest {
         when(personRepository.findById(1L))
                 .thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> personService.modify(1L, "daniel"));
+        assertThrows(PersonNotFoundException.class, () -> personService.modify(1L, "daniel"));
     }
 
     @Test
@@ -116,7 +118,7 @@ class PersonServiceTest {
         when(personRepository.findById(1L))
                 .thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> personService.delete(1L));
+        assertThrows(PersonNotFoundException.class, () -> personService.delete(1L));
     }
 
     @Test
