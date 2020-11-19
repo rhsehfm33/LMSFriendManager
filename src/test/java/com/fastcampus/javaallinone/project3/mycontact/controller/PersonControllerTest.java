@@ -48,7 +48,8 @@ class PersonControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        mockMvc = MockMvcBuilders.standaloneSetup(personController).setMessageConverters(messageConverter).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(personController).setMessageConverters(messageConverter)
+                .addFilter(new CharacterEncodingFilter("UTF-8",true)).build();
     }
 
     @Test
