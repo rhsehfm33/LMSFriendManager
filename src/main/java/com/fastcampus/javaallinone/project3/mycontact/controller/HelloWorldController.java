@@ -9,4 +9,9 @@ public class HelloWorldController {
     public String helloWorld() {
         return "HelloWorld!";
     }
+
+    @GetMapping(value = "/api/helloException")
+    public String helloException() {
+        throw new RuntimeException("Hello RuntimeException");
+    }
 }
