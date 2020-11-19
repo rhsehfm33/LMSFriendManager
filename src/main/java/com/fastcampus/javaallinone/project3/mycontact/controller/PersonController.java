@@ -16,9 +16,6 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    @Autowired
-    PersonRepository personRepository;
-
     @GetMapping("/{id}")
     public Person getPerson(@PathVariable Long id) {
         return personService.getPerson(id);
